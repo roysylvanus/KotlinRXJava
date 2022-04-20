@@ -6,11 +6,9 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import com.malikali.rxjava.databinding.ActivityMainBinding
 import com.malikali.rxjava.viewmodels.AnimalViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -19,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     private var progress:Boolean = true
     private lateinit var binding: ActivityMainBinding
     private var text = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         Thread {
 
-               handler.postDelayed(Runnable {
-                   // Thread.sleep(1000)
+               handler.postDelayed( {
+
                    if (!progress) {
                        binding.progressBar.visibility = View.GONE
                        binding.textView.text = text
@@ -56,13 +56,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.animal.observe(this, Observer {
+        viewModel.animal.observe(this) {
             text = it.name
-        })
+        }
 
-        viewModel.isLoading.observe(this, Observer {
+        viewModel.isLoading.observe(this) {
             progress = it
-        })
+        }
     }
 
 
